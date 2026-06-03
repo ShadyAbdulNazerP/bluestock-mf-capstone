@@ -1,23 +1,34 @@
-CREATE TABLE fund_master (
-    amfi_code INTEGER,
-    fund_house TEXT,
+CREATE TABLE dim_fund (
+    amfi_code INTEGER PRIMARY KEY,
     scheme_name TEXT,
+    fund_house TEXT,
     category TEXT,
     sub_category TEXT
 );
-import sqlite3
-import pandas as pd
 
-conn = sqlite3.connect(
-    "data/db/bluestock_mf.db"
-)
+CREATE TABLE fact_nav (
+    amfi_code INTEGER,
+    date DATE,
+    nav REAL
+);
 
-query = """
-SELECT *
-FROM fund_master
-LIMIT 5
-"""
+CREATE TABLE fact_transactions (
+    transaction_id INTEGER,
+    amfi_code INTEGER,
+    transaction_date DATE,
+    amount_inr REAL
+);
 
-df = pd.read_sql(query, conn)
+CREATE TABLE fact_performance (
+    amfi_code INTEGER,
+    return_1yr_pct REAL,
+    return_3yr_pct REAL,
+    return_5yr_pct REAL,
+    expense_ratio_pct REAL
+);
 
-df
+CREATE TABLE fact_aum (
+    fund_house TEXT,
+    date DATE,
+    aum_crore REAL
+);
